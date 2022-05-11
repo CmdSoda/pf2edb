@@ -5,6 +5,7 @@ import (
 	"github.com/alexflint/go-arg"
 )
 
+// usage: pf2edb.exe <dbfile>
 func main() {
 	var args struct {
 		Foo string
