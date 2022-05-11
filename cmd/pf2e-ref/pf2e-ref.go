@@ -33,18 +33,12 @@ func main() {
 	if errLoadSystem != nil {
 		panic("Datei fehlt")
 	}
-	fmt.Println(sys)
 
-	for i := 0; i < len(sys.Packs); i++ {
-		p := sys.Packs[i]
-		fmt.Println(p.Path)
-		if p.Type == "Item" {
-			dbitems, err := p.GetItems(systemPath)
-			if err != nil {
-				panic(err)
-				return
-			}
-			fmt.Println(len(dbitems))
-		}
+	allItems, err2 := pf2e.NewAllPacks(sys.Packs, systemPath)
+	if err2 != nil {
+		log.Fatal(err2)
+		return
 	}
+
+	fmt.Println(len(allItems))
 }

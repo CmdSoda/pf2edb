@@ -24,7 +24,26 @@ func (ic InvalidDbCategoryError) Error() string {
 	return "Invalid db category"
 }
 
-func (p Pack) GetItems(systemRoot string) ([]Item, error) {
+type PackItems []Item
+type AllPacks []PackItems
+
+func NewAllPacks(packs []Pack, systemPath string) (AllPacks, error) {
+	var ret AllPacks
+	for i := 0; i < len(packs); i++ {
+		p := packs[i]
+		if p.Type == "Item" {
+			items, err := p.GetItems(systemPath)
+			if err != nil {
+				panic(err)
+				return ret, err
+			}
+			ret = append(ret, items)
+		}
+	}
+	return ret, nil
+}
+
+func (p Pack) GetItems(systemRoot string) (PackItems, error) {
 	var itemList []Item
 	if p.Type != "Item" {
 		return itemList, InvalidDbCategoryError{}
