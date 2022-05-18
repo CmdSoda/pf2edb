@@ -4,9 +4,12 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
+	"golang.design/x/clipboard"
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 )
 
@@ -118,26 +121,59 @@ func DoTranslate(allPacks *AllPacks, allTranslations *AllTranslations) {
 	}
 }
 
-func Search(allPacks AllPacks, search string, showDesc bool) {
+func Search(allPacks AllPacks, search string, showDesc bool, exact bool, interactive bool) {
+	count := 1
+	var results []string
 	for packItemsListIndex := 0; packItemsListIndex < len(allPacks); packItemsListIndex++ {
 		pi := allPacks[packItemsListIndex]
 		for itemsListIndex := 0; itemsListIndex < len(*pi); itemsListIndex++ {
 			i := (*pi)[itemsListIndex]
-			searchLower := strings.ToLower(search)
-			if strings.ToLower(i.Name) == searchLower ||
-				strings.ToLower(i.NameTranslation) == searchLower ||
-				strings.Contains(strings.ToLower(i.Name), searchLower) ||
-				strings.Contains(strings.ToLower(i.NameTranslation), searchLower) {
+			var name string
+			var nameTranslate string
+			if exact {
+				name = i.Name
+				nameTranslate = i.GetCleanTranslation()
+			} else {
+				name = strings.ToLower(i.Name)
+				nameTranslate = strings.ToLower(i.GetCleanTranslation())
+				search = strings.ToLower(search)
+			}
+			if name == search || nameTranslate == search || !exact && (strings.Contains(nameTranslate, search) || strings.Contains(nameTranslate, search)) {
+				fmt.Print(strconv.Itoa(count) + ":")
+				var reference string
 				if i.GetCleanTranslation() != "" {
-					fmt.Println("@Compendium[" + i.modulePath + "." + i.ID + "]{" + i.GetCleanTranslation() + "}")
+					reference = "@Compendium[" + i.modulePath + "." + i.ID + "]{" + i.GetCleanTranslation() + "}"
 				} else {
-					fmt.Println("@Compendium[" + i.modulePath + "." + i.ID + "]{" + i.Name + "}")
+					reference = "@Compendium[" + i.modulePath + "." + i.ID + "]{" + i.Name + "}"
 				}
+				fmt.Println(reference)
 				if showDesc {
 					fmt.Println(i.Data.Description.Value)
 					fmt.Println()
 				}
+				results = append(results, reference)
+				count++
 			}
+		}
+	}
+	if interactive {
+		reader := bufio.NewReader(os.Stdin)
+		fmt.Print("Enter number:")
+		text, _ := reader.ReadString('\n')
+		text = strings.TrimSpace(text)
+		number, err := strconv.Atoi(text)
+		if err != nil {
+			log.Panicln(err)
+			return
+		}
+		result := results[number-1]
+		fmt.Println(result)
+		fmt.Println("Copied to clipboard")
+		clipboard.Write(clipboard.FmtText, []byte(result))
+	} else {
+		if len(results) == 1 {
+			fmt.Println("Copied to clipboard")
+			clipboard.Write(clipboard.FmtText, []byte(results[0]))
 		}
 	}
 }

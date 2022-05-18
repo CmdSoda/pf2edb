@@ -6,20 +6,32 @@ import (
 	"github.com/alexflint/go-arg"
 	"log"
 	"os"
+	"path/filepath"
 )
 
 // usage: pf2e-ref.exe [-c type] <search-string>
 func main() {
-	fmt.Println("pf2e-ref.exe V1.0.0")
+	fmt.Println("pf2e-ref.exe V1.0.1")
 	var args struct {
 		Type            string `arg:"-t"`
 		ShowDescription bool   `arg:"-d"`
+		Exact           bool   `arg:"-e"`
+		Interactive     bool   `arg:"-i"`
 		Search          string `arg:"positional, required"`
 	}
 	arg.MustParse(&args)
 
+	path, errExe := os.Executable()
+	if errExe != nil {
+		log.Println(errExe)
+	}
+	configPath := filepath.Dir(path) + "./pf2e-ref.config.json"
+
+	//configPath := "./pf2e-ref.config.json"
+	fmt.Println("loading config " + configPath)
+
 	ctx := pf2e.NewContext()
-	err := ctx.Config.Load("./config.json")
+	err := ctx.Config.Load(configPath)
 	if err != nil {
 		panic("verdammt")
 	}
@@ -62,5 +74,5 @@ func main() {
 	}
 
 	pf2e.DoTranslate(&allItems, &tl)
-	pf2e.Search(allItems, args.Search, args.ShowDescription)
+	pf2e.Search(allItems, args.Search, args.ShowDescription, args.Exact, args.Interactive)
 }
