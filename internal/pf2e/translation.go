@@ -7,6 +7,7 @@ type TranslationEntryData struct {
 
 type TranslationData struct {
 	Label   string                          `json:"label"`
+	Mapping TranslationEntryData            `json:"mapping"`
 	Entries map[string]TranslationEntryData `json:"entries"`
 }
 

@@ -98,8 +98,56 @@ func NewAllTranslations(compendiumFolder string) (AllTranslations, error) {
 			}
 		}
 	}
-
 	return tl, nil
+}
+
+func clean(name string) string {
+	cleanIndex := strings.Index(name, "/")
+	if cleanIndex != -1 {
+		return name[0:cleanIndex]
+	} else {
+		return name
+	}
+}
+
+func RemoveAllEnglishWords(compendiumFolder string) error {
+	files, err := ioutil.ReadDir(compendiumFolder)
+	if err != nil {
+		return err
+	}
+
+	for _, file := range files {
+		if !file.IsDir() {
+			compendiumFilepath := compendiumFolder + "\\" + file.Name()
+			ext := filepath.Ext(compendiumFilepath)
+			if ext == ".json" {
+				content, err := ioutil.ReadFile(compendiumFilepath)
+				if err != nil {
+					return err
+				}
+				td := TranslationData{}
+				err = json.Unmarshal(content, &td)
+				if err != nil {
+					return err
+				}
+				for key, _ := range td.Entries {
+					ted := td.Entries[key]
+					ted.Name = clean(ted.Name)
+					td.Entries[key] = ted
+				}
+
+				c2, err2 := json.Marshal(td)
+				if err2 != nil {
+					return err2
+				}
+				err3 := ioutil.WriteFile(compendiumFilepath, c2, 0644)
+				if err3 != nil {
+					return err3
+				}
+			}
+		}
+	}
+	return nil
 }
 
 func DoTranslate(allPacks *AllPacks, allTranslations *AllTranslations) {
