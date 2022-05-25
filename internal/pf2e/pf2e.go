@@ -186,7 +186,7 @@ func Search(allPacks AllPacks, search string, showDesc bool, exact bool, interac
 				nameTranslate = strings.ToLower(i.GetCleanTranslation())
 				search = strings.ToLower(search)
 			}
-			if name == search || nameTranslate == search || !exact && (strings.Contains(nameTranslate, search) || strings.Contains(nameTranslate, search)) {
+			if name == search || nameTranslate == search || !exact && (strings.Contains(name, search) || strings.Contains(nameTranslate, search)) {
 				fmt.Print(strconv.Itoa(count) + ":")
 				var reference string
 				if i.GetCleanTranslation() != "" {

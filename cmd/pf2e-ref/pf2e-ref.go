@@ -21,11 +21,18 @@ func main() {
 	}
 	arg.MustParse(&args)
 
-	path, errExe := os.Executable()
-	if errExe != nil {
-		log.Println(errExe)
+	config := "./pf2e-ref.config.json"
+	configPath := ""
+
+	if _, err := os.Stat(config); err == nil {
+		configPath = config
+	} else {
+		path, errExe := os.Executable()
+		if errExe != nil {
+			log.Println(errExe)
+		}
+		configPath = filepath.Dir(path) + "./pf2e-ref.config.json"
 	}
-	configPath := filepath.Dir(path) + "./pf2e-ref.config.json"
 
 	//configPath := "./pf2e-ref.config.json"
 	fmt.Println("loading config " + configPath)
