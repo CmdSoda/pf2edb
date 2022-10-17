@@ -7,3 +7,5 @@ Beispiel:
 
 Das Ausführen der exe verändert den Inhalt der json-Dateien des lang-de-pf2e-Moduls. Dieser Vergang ist somit destruktiv. Nach jedem Update des Übersetzungsmoduls müsst ihr die pf2e-rmen.exe erneut ausführen.
 Die pf2e-rmen.exe ist nur mit Foundry V10 kompatibel.
+
+DAS VERWENDEN DER DATEIEN VON DIESEM REPO GESCHIEHT AUF EIGENE GEFAHR.
