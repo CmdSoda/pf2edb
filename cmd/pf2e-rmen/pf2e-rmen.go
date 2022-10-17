@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/CmdSoda/pf2edb/internal/pf2e"
 	"log"
+
+	"github.com/CmdSoda/pf2edb/internal/pf2e"
 )
 
 func main() {
-	fmt.Println("pf2e-ref.exe V1.0.1")
+	fmt.Println("pf2e-rmen.exe V1.0")
 
 	/*
 		path, errExe := os.Executable()
