@@ -19,3 +19,6 @@ Ihr müsst die pf2e-ref.config.json Datei anpassen und "DataFolder" auf euer Dat
 
 Hier sieht man ein Beispiel für den Kompendiumbrowser nach der Entfernung der englischen Wörter:
 ![Beispiel](zauber.png)
+
+Hier ist ein Beispiel für den Abenteuerrucksack:
+![Beispiel](rucksack.png)
