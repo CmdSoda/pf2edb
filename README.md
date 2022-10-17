@@ -1,3 +1,4 @@
+# pf2e-rmen.exe
 pf2e-rmen.exe entfernt die englischen Überbleibsel aus der deutschen Übersetzung.
 Beispiel:
 * Aus "Tanzende Lichter/Dancing Lights" wird "Tanzende Lichter"
