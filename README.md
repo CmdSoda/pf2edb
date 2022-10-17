@@ -17,4 +17,4 @@ Ihr findet die Datei im cmd/pf2e-rmen Verzeichnis.
 # Was ist noch zu tun?
 Ihr müsst die pf2e-ref.config.json Datei anpassen und "DataFolder" auf euer Data-Verzeichnis anpassen. Danach seid ihr bereit die EXE auszuführen.
 
-!(zauber.png)
+![Beispiel](zauber.png)
