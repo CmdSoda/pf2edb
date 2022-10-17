@@ -5,9 +5,19 @@ type TranslationEntryData struct {
 	Description string `json:"description"`
 }
 
+type ConverterName struct {
+	Path        string `json:"path"`
+	Description string `json:"description"`
+}
+
+type TranslationConverterEntryData struct {
+	Name        ConverterName
+	Description string `json:"description"`
+}
+
 type TranslationData struct {
-	Label   string                          `json:"label"`
-	Mapping TranslationEntryData            `json:"mapping"`
+	Label string `json:"label"`
+	//Mapping TranslationConverterEntryData   `json:"mapping"`
 	Entries map[string]TranslationEntryData `json:"entries"`
 }
 

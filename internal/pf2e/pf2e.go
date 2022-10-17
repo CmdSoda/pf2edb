@@ -4,13 +4,14 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
-	"golang.design/x/clipboard"
 	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
+
+	"golang.design/x/clipboard"
 )
 
 func NewSystemFromFilename(filename string) (System, error) {
@@ -119,6 +120,7 @@ func RemoveAllEnglishWords(compendiumFolder string) error {
 	for _, file := range files {
 		if !file.IsDir() {
 			compendiumFilepath := compendiumFolder + "\\" + file.Name()
+			log.Println(compendiumFilepath)
 			ext := filepath.Ext(compendiumFilepath)
 			if ext == ".json" {
 				content, err := ioutil.ReadFile(compendiumFilepath)
